@@ -18,11 +18,18 @@ st.title("📈 Stock Price Trend Prediction")
 ticker = st.text_input("Enter Stock Ticker", "AAPL")
 
 # Load data
-stock = yf.download(ticker, start="2018-01-01", end="2024-01-01")
+stock = yf.download(
+    ticker,
+    start="2018-01-01",
+    end="2024-01-01",
+    progress=False,
+    threads=False
+)
 
-if stock.empty:
-    st.error("Invalid ticker symbol")
+if stock is None or len(stock) == 0:
+    st.warning("⚠️ Data not available right now. Please try again.")
     st.stop()
+stop()
 
 st.subheader("Stock Data Preview")
 st.write(stock.head())
@@ -89,3 +96,4 @@ if prediction[0] == 1:
     st.success("📈 Stock Price Likely to GO UP")
 else:
     st.error("📉 Stock Price Likely to GO DOWN")
+
